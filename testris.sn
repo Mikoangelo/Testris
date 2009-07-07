@@ -1,0 +1,19 @@
+#!/usr/bin/env snow
+require("lib/console codes.sn")
+require("lib/point.sn")
+require("lib/piece.sn")
+require("lib/board.sn")
+
+// Temporary pre-determined per-frame keystroke sequence, because asynchronous IO is hard.
+input: @("", "", "l", "", "l", "", "h", "h", "", "h", "", "", "h", "h", "", "l")
+
+Board.draw()
+while true
+  sleep(0.5)
+  Board.interpret_key(input.shift())
+  Board.draw()
+  
+  sleep(0.5)
+  Board.advance()
+  Board.draw()
+end

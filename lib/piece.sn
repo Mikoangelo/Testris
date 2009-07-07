@@ -1,0 +1,27 @@
+Piece: Object.new()
+Piece.object_eval {
+  .shapes: @(#I, #L, #J, #O, #S, #Z, #T)
+  
+  .new: [shape] {
+    instance: Object.new(self)
+    instance.shape: shape
+    instance.orientation: #up
+    instance.position: Point.new(Board.width/2, Board.height-1)
+    instance
+  }
+  
+  .can_move_down?: {
+    new_position: .position + Point.new(0, -1)
+    Board.legal_position?(new_position) and (not Board.occupied?(new_position))
+  }
+  .can_move_left?: { true }
+  .can_move_right?: { true }
+  
+  .covers?: [point] {
+    point = .position
+  }
+  
+  .covered_cells: {
+    @(.position)
+  }
+}

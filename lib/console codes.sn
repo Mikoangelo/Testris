@@ -1,0 +1,20 @@
+Codes: Object.new()
+Codes.object_eval {
+  .clear:   "\033[0m"
+  .bold:    "\033[1m"
+  .red:     "\033[31m"
+  .green:   "\033[32m"
+  .yellow:  "\033[33m"
+  .blue:    "\033[34m"
+  .magenta: "\033[35m"
+  .cyan:    "\033[36m"
+  .white:   "\033[37m"
+  .move_up:   [lines] { "\033[${lines}A" }
+  .move_down: [lines] { "\033[${lines}B" }
+  .move_right: [columns] { "\033[${columns}C" }
+  .move_left:  [columns] { "\033[${columns}D" }
+  .move_down_and_reset_column: [lines] { "\033[${lines}E" }
+  .move_up_and_reset_column:   [lines] { "\033[${lines}F" }
+  .move_to_column: [column] { "\033[${column}G" }
+  // Hey, this is fun :D
+}

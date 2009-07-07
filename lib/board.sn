@@ -1,0 +1,84 @@
+Board: Object.new()
+Board.object_eval {
+  .height: 5
+  .width:  11
+  .current_piece: Piece.new(#I)
+  
+  .cells: @()
+  .height.times {
+    row: @()
+    .width.times { row << nil }
+    .cells << row
+  }
+  
+  .advance: {
+    if .current_piece.can_move_down?()
+      .current_piece.position.y: .current_piece.position.y - 1
+    else
+      .absorb_piece()
+      .current_piece: Piece.new(#S)
+    end
+  }
+  
+  .absorb_piece: {
+    .current_piece.covered_cells().each [cell] {
+      .cells.get(.height - cell.y - 1).set(cell.x, .current_piece.shape)
+    }
+    .current_piece: nil
+  }
+  
+  .occupied?: [point] {
+    .cells.get(.height - point.y - 1).get(point.x)
+  }
+  
+  .legal_position?: [point] {
+    (point.x >= 0) and (point.x < .width) and (point.y >= 0) and (point.y < .height)
+  }
+  
+  .draw: {
+    puts("${.current_piece.position.x}, ${.current_piece.position.y}")
+    print("+"); .width.times { print("-") }; puts("+")
+    .cells.each [row, y] {
+      print("|")
+      row.each [cell, x] {
+        if it
+          print(color_of_shape(it) + "#")
+        else if .current_piece.covers?(Point.new(x, .height - y - 1))
+          print(color_of_shape(.current_piece.shape) + "#")
+        else
+          print(" ")
+        end
+      }
+      print("\033[0m|")
+      puts()
+    }
+    print("+"); .width.times { print("-") }; puts("+")
+    
+    print(Codes.move_up(.height - .current_piece.position.y + 1))
+    print(Codes.move_to_column(.current_piece.position.x + 1))
+    puts(Codes.move_down_and_reset_column(.height - .current_piece.position.y + 1))
+    print(Codes.move_up_and_reset_column(.height + 4))
+  }
+  
+  .interpret_key: [key] {
+    return if key = ""
+    if key = "h" and (.current_piece.can_move_left?())
+      .current_piece.position: .current_piece.position + Point.new(-1, 0)
+    else if key = "l" and (.current_piece.can_move_right?())
+      .current_piece.position: .current_piece.position + Point.new(1, 0)
+    end
+  }
+}
+
+// This needs to be a hash … WHEN THEY WORK!
+color_of_shape: [shape] {
+  @(#I, #L, #J, #O, #S, #Z, #T)
+  if shape = #I;      Codes.red
+  else if shape = #L; Codes.green
+  else if shape = #J; Codes.yellow
+  else if shape = #O; Codes.blue
+  else if shape = #S; Codes.magenta
+  else if shape = #Z; Codes.cyan
+  else if shape = #T; Codes.white
+  end
+}

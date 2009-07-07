@@ -1,0 +1,19 @@
+// Origin is at bottom left, increasing north-east.
+
+Point: Object.new()
+Point.object_eval {
+  .new: [x,y] {
+    instance: Object.new(self)
+    instance.x: x
+    instance.y: y
+    instance
+  }
+  
+  .set_member(#"=") {
+    (it.x = .x) and (it.y = .y)
+  }
+  
+  .set_member(#"+") {
+    .new(.x + it.x, .y + it.y)
+  }
+}
