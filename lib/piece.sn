@@ -10,18 +10,32 @@ Piece.object_eval {
     instance
   }
   
-  .can_move_down?: {
-    new_position: .position + Point.new(0, -1)
-    Board.legal_position?(new_position) and (not Board.occupied?(new_position))
+  .can_move_with_delta?: [delta] {
+    // Yeah …
+    result: @(true)
+    .covered_cells().each [cell] {
+      new_cell: cell + delta
+      unless Board.legal_position?(new_cell) and (not Board.occupied?(new_cell))
+        result.set(0, false)
+      end
+    }
+    result.get(0)
   }
-  .can_move_left?: { true }
-  .can_move_right?: { true }
+  
+  .can_move_down?: { .can_move_with_delta?(Point.new(0, -1)) }
+  .can_move_left?: { .can_move_with_delta?(Point.new(-1, 0)) }
+  .can_move_right?: { .can_move_with_delta?(Point.new(1, 0)) }
   
   .covers?: [point] {
-    point = .position
+    // Yeah …
+    result: @(false)
+    .covered_cells().each [cell] {
+        result.set(0, true) if cell = point
+    }
+    result.get(0)
   }
   
   .covered_cells: {
-    @(.position)
+    @(.position, .position + Point.new(-1, 0), .position + Point.new(1,  0), .position + Point.new(0, 1))
   }
 }
