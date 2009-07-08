@@ -55,7 +55,6 @@ Board.object_eval {
     print("+"); .width.times { print("-") }; puts("+")
     
     print(Codes.move_up(.height - .current_piece.position.y + 1))
-    print(Codes.move_to_column(.current_piece.position.x + 1))
     puts(Codes.move_down_and_reset_column(.height - .current_piece.position.y + 1))
     print(Codes.move_up_and_reset_column(.height + 4))
   }
