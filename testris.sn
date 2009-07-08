@@ -8,7 +8,7 @@ require("lib/board.sn")
 input: @("", "", "l", "", "l", "", "h", "h", "", "h", "", "", "h", "h", "", "l")
 
 Board.draw()
-while true
+while input.length > 0
   sleep(0.5)
   Board.interpret_key(input.shift())
   Board.draw()
