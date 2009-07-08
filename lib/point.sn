@@ -16,4 +16,18 @@ Point.object_eval {
   .set_member(#"+") {
     .new(.x + it.x, .y + it.y)
   }
+  
+  .set_member(#"*") {
+    /* i = imaginary identity.
+       (.x + .y*i) * (it.x + it.y*i)                             ⇔
+       ((.x + .y*i) * it.x + (.x + .y*i) * it.y*i)               ⇔
+       .x * it.x + .y*i * it.x + .x * it.y*i + .y*i * it.y*i     ⇔
+       .x * it.x + (.y * it.x + .x * it.y)*i + .y * it.y * i**2  ⇔
+       .x * it.x + (.y * it.x + .x * it.y)*i - .y * it.y         ⇔  (Note that i**2 = -1)
+       .x * it.x - .y * it.y + (.y * it.x + .x * it.y)*i         ⇔
+       Have a nice day. :) */
+    .new(.x*it.x - .y*it.y, .y*it.x + .x*it.y)
+  }
+  
+  .inspect: { "#<Point ${.x} + ${.y}i>" }
 }
